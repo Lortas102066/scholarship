@@ -14,10 +14,10 @@ export default function Home() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/scholar-hero.png"
-          layout="fill"
-          objectFit="cover"
+          fill
           quality={100}
           alt="Background"
+          priority
         />
         <div className="absolute inset-0 bg-black bg-opacity-60"></div> 
       </div>

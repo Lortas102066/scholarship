@@ -1,39 +1,51 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 const navItems = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
   { name: '奨学金を探す', href: '/scholarship' },
-]
+];
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
-  const pathname = usePathname()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+      setIsMobile(window.innerWidth < 768);
+    };
 
-    handleResize()
-    window.addEventListener('resize', handleResize)
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleUserSession = () => {
+    if (!session) {
+      signIn();
+    } else {
+      signOut();
     }
-  }, [])
+  };
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -60,17 +72,20 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="ml-4 border-[#7CB7B7] text-black hover:bg-[#7CB7B7]/10"
+              onClick={handleUserSession}
             >
-              ログイン
+              {session ? 'ログアウト' : 'ログイン'}
             </Button>
-            <Button 
-              className="ml-2 bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
-            >
-              会員登録
-            </Button>
+            {!session && (
+              <Button
+                className="ml-2 bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
+              >
+                会員登録
+              </Button>
+            )}
           </div>
 
           {/* Mobile Navigation */}
@@ -109,21 +124,27 @@ export default function Header() {
               </Link>
             ))}
             <div className="mt-4 space-y-2">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="w-full border-[#7CB7B7] text-black hover:bg-[#7CB7B7]/10"
+                onClick={() => {
+                  handleUserSession();
+                  setIsMobileMenuOpen(false);
+                }}
               >
-                ログイン
+                {session ? 'ログアウト' : 'ログイン'}
               </Button>
-              <Button 
-                className="w-full bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
-              >
-                会員登録
-              </Button>
+              {!session && (
+                <Button
+                  className="w-full bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
+                >
+                  会員登録
+                </Button>
+              )}
             </div>
           </div>
         </div>
       )}
     </nav>
-  )
+  );
 }

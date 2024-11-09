@@ -23,11 +23,6 @@ const filters = [
   { id: 'international', label: 'International' },
 ]
 
-const studentType = [
-    { "id": "highschool", "label": "High School" },
-    
-]
-
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])

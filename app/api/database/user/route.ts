@@ -4,7 +4,7 @@ import { nextAuthOptions } from "@/lib/next-auth/options";
 import dbConnect from '@/utils/database';
 import User from '@/models/user';
 
-export async function POST(request: Request) {
+export async function POST() {
     const session = await getServerSession(nextAuthOptions);
     if (!session) {
         return NextResponse.json({ redirect: "/api/auth/signin" });

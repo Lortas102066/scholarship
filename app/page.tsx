@@ -1,16 +1,54 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState, FormEvent } from 'react';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
   const handleGetStarted = () => {
-    router.push("/scholarship")
-  }
+    router.push("/scholarship");
+  };
+
+  const handleSendEmailClick = async () => {
+    if (!email) {
+      alert('メールアドレスを入力してください。');
+      return;
+    }
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/email/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStatus('success');
+        setMessage(data.message);
+        setEmail('');
+      } else {
+        throw new Error(data.message || 'メール送信に失敗しました。');
+      }
+    } catch (error: any) {
+      console.error('Subscription Error:', error);
+      setStatus('error');
+      setMessage(error.message || '予期せぬエラーが発生しました。');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -45,12 +83,29 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <h2 className="text-3xl font-bold mb-6 text-center">最新の奨学金情報を受け取る</h2>
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input type="email" placeholder="メールアドレス" />
-              <Button type="submit">登録</Button>
+              <Input 
+                type="email" 
+                placeholder="メールアドレス" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                required 
+              />
+              <Button 
+                type="button" 
+                onClick={handleSendEmailClick} 
+                disabled={status === 'loading'}
+              >
+                {status === 'loading' ? '登録中...' : '登録'}
+              </Button>
             </div>
+            {message && (
+              <p className={`mt-4 text-center ${status === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                {message}
+              </p>
+            )}
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

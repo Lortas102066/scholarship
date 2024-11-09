@@ -25,10 +25,12 @@
     "next-auth": "^4.24.10",
     "react": "^18",
     "react-dom": "^18",
+    "resend": "^4.0.1-alpha.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/mailgun-js": "^0.22.18",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

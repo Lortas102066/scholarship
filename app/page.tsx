@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 
 export default function Home() {
   const router = useRouter();
@@ -43,10 +43,10 @@ export default function Home() {
       } else {
         throw new Error(data.message || 'メール送信に失敗しました。');
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Subscription Error:', error);
       setStatus('error');
-      setMessage(error.message || '予期せぬエラーが発生しました。');
+      setMessage('予期せぬエラーが発生しました。');
     }
   };
 

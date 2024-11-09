@@ -130,12 +130,17 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                onClick={e => {
+                  if (item.name === '自分に合った奨学金を探す') {
+                    e.preventDefault(); // デフォルトのページ遷移を阻止
+                    fetchScholarships();
+                  }
+                }}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   pathname === item.href
                     ? 'bg-gray-900 text-white'
                     : 'text-black hover:bg-gray-100 hover:text-black'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
@@ -162,6 +167,7 @@ export default function Header() {
           </div>
         </div>
       )}
+
     </nav>
   );
 }

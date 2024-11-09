@@ -1,18 +1,17 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const navItems = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
   { name: 'Contact', href: '/contact' },
-  { name: '奨学金を探す', href: '/scholarship' },
+  { name: '奨学金リスト', href: '/scholarship' },
+  { name: '自分に合った奨学金を探す', href: '/api/database/user' },
 ];
 
 export default function Header() {
@@ -21,6 +20,18 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
+
+  async function fetchScholarships() {
+    try {
+      const response = await fetch('/api/database/user', { method: 'POST' }); 
+      const data = await response.json();
+      if (data.redirect) {
+        router.push(data.redirect);
+      }
+    } catch (error) {
+      console.error('APIを取得中にエラーが発生しました:', error);
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,9 +48,9 @@ export default function Header() {
 
   const handleUserSession = () => {
     if (!session) {
-      signIn();
+      router.push('/api/auth/signin');
     } else {
-      signOut();
+      router.push('/api/auth/signout');
     }
   };
 
@@ -63,6 +74,12 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                onClick={e => {
+                  if (item.name === '自分に合った奨学金を探す') {
+                    e.preventDefault(); 
+                    fetchScholarships(); 
+                  }
+                }}
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
                   pathname === item.href
                     ? 'bg-gray-900 text-white'

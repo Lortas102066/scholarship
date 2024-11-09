@@ -1,8 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import GitHubProviders from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import client from "./db";
+import User from "@/models/user";
+import connectDB from "@/utils/database";
 
 export const nextAuthOptions: NextAuthOptions = {
     debug: true,
@@ -15,17 +15,31 @@ export const nextAuthOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
     ],
-    adapter: MongoDBAdapter(client),
     callbacks: {
-        session: ({session, user}) => { 
-        return {
-            ...session,
-            user: {
-                ...session.user,
-                id: user.id,
-            },
-        };
-    }
+        async session({session}) { 
+            if (session.user) {
+                const sessionUser = await User.findOne({ email: session.user.email });
+            }
+        return session;
+    },
+    async signIn({ user }) {
+        try {
+            await connectDB();
+            const userExists = await User.findOne({ email: user.email });
+            if (!userExists) {
+                await new User({
+                    name: user.name,
+                    email: user.email,
+                }).save();
+                return "/user-register";
+            }
+            return true;
+        } 
+        catch (error) {
+            console.log(error);
+            return false;
+        }
+    },
     },
     secret: process.env.NEXTAUTH_SECRET,
 };

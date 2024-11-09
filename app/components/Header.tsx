@@ -23,7 +23,7 @@ export default function Header() {
 
   async function fetchScholarships() {
     try {
-      const response = await fetch('/api/database/user', { method: 'POST' }); 
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/database/user`, { method: 'POST' }); 
       const data = await response.json();
       if (data.redirect) {
         router.push(data.redirect);

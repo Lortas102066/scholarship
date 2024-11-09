@@ -65,7 +65,7 @@ export default function Component() {
         const submitData = { ...data, isPersonalInfoFilled: true };
         console.log(submitData);
         try {
-          const response = await fetch('/api/database/updateUser', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/database/updateUser`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(submitData),

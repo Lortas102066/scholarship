@@ -16,10 +16,15 @@ export const nextAuthOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
-        async session({session}) { 
+    async session({ session }) {
+        try {
+            await connectDB();
             if (session.user) {
                 await User.findOne({ email: session.user.email });
             }
+        } catch (error) {
+            console.error('Session callback error:', error);
+        }
         return session;
     },
     async signIn({ user }) {

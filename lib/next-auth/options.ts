@@ -36,7 +36,6 @@ export const nextAuthOptions: NextAuthOptions = {
                     name: user.name,
                     email: user.email,
                 }).save();
-                return "/user-register";
             }
             return true;
         } 

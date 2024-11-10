@@ -29,7 +29,7 @@ const sendEmail = async ({to}: {to: string}) => {
   }
 
   try {
-    const sendResult = await transport.sendMail({
+    await transport.sendMail({
       from: SMTP_EMAIL,
       to: to,
       subject: "ご登録ありがとうございます",

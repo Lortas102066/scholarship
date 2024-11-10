@@ -11,7 +11,7 @@ const navItems = [
   { name: 'Home', href: '/' },
   { name: 'Contact', href: '/contact' },
   { name: '奨学金リスト', href: '/scholarship' },
-  { name: '自分に合った奨学金を探す', href: '/api/database/user' },
+  { name: '自分に合った奨学金を探す', href: '#' },
 ];
 
 export default function Header() {

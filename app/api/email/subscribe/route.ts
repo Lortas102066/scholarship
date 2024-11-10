@@ -1,22 +1,41 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY!);
+import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   const { email } = await request.json();
-  console.log('Sending email to:', email);
   try {
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: email,
-      subject: '登録ありがとうございます',
-      html: 
-      '<p>ご登録ありがとうございます<strong>first email</strong>!</p>'
-    });
+    sendEmail({to: email});
     return NextResponse.json({ message: 'メールを送信しました。' });
   } catch (error) {
     console.error('Failed to send email:', error);
     return NextResponse.error();
+  }
+}
+
+const sendEmail = async ({to}: {to: string}) => {
+  const {SMTP_PASSWORD, SMTP_EMAIL} = process.env;
+  const transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: SMTP_EMAIL,
+      pass: SMTP_PASSWORD
+    }
+  });
+  try {
+    const testResult = await transport.verify();
+    console.log("Test result: ", testResult);
+  } catch (error) {
+    console.error('Failed to send email:', error);
+  }
+
+  try {
+    const sendResult = await transport.sendMail({
+      from: SMTP_EMAIL,
+      to: to,
+      subject: "ご登録ありがとうございます",
+      text: "Scholarにようこそ!",
+    });
+  } catch (error) {
+    console.error('Failed to send email:', error);
   }
 }

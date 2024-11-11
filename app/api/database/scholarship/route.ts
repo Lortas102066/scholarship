@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import Scholarship from '@/models/Scholarship';
+import Scholarship from '@/models/scholarship';
 import dbConnect from '@/utils/database';
 
 export async function GET() {

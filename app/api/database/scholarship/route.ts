@@ -8,6 +8,6 @@ export async function GET() {
     const scholarship = await Scholarship.find();
     return NextResponse.json(scholarship);
   } catch (error) {
-    return NextResponse.json({ error: '奨学金の取得に失敗しました' }, { status: 500 });
+    return NextResponse.json(error);
   }
 }

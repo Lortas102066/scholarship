@@ -15,19 +15,12 @@ const filters = [
   { id: 'international', label: 'International' },
 ]
 
-const studentType = [
-  { id: 'elementary', label: '小学生' },  
-  { id: 'middleschool', label: '中学生' },
-  { id: 'highschool', label: '高校生' },  
-  { id: 'university', label: '大学生' },  
-  { id: 'graduate', label: '大学院生' },  
-  { id: 'vocational', label: '専門学生' },
-];
-
 export default function Component() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
   const [showFilters, setShowFilters] = useState(false)
+  const [dueDate, setDueDate] = useState('')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('')
   const filterRef = useRef<HTMLDivElement>(null)
 
   interface Scholarship {
@@ -81,16 +74,24 @@ export default function Component() {
   const filteredScholarships = scholarships.filter(scholarship => {
     const matchesSearchTerm = scholarship.scholarship_name.toLowerCase().includes(searchTerm.toLowerCase())
 
-    const selectedStudentTypes = selectedFilters.filter(filterId => studentType.some(st => st.id === filterId))
-    const matchesStudentType = selectedStudentTypes.length === 0 || selectedStudentTypes.includes(scholarship.education_level)
-
     const selectedFilterIds = selectedFilters.filter(filterId => filters.some(f => f.id === filterId))
     const matchesFieldOfStudy = selectedFilterIds.length === 0 || selectedFilterIds.some(filterId => {
       return scholarship.field_of_study && scholarship.field_of_study.toLowerCase().includes(filterId.toLowerCase())
     })
 
-    return matchesSearchTerm && matchesStudentType && matchesFieldOfStudy
+    const matchesDueDate = !dueDate || new Date(scholarship.application_deadline) >= new Date(dueDate)
+
+    return matchesSearchTerm && matchesFieldOfStudy && matchesDueDate
   })
+
+  // 並び替えロジックを追加
+  const sortedScholarships = [...filteredScholarships];
+
+  if (sortOrder === 'asc') {
+    sortedScholarships.sort((a, b) => a.award_amount - b.award_amount);
+  } else if (sortOrder === 'desc') {
+    sortedScholarships.sort((a, b) => b.award_amount - a.award_amount);
+  }
 
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(amount);
@@ -126,24 +127,61 @@ export default function Component() {
           <div className={`md:block ${showFilters ? 'block' : 'hidden'}`}>
             <Card className="mb-4">
               <CardHeader>
-                <CardTitle>学生区分</CardTitle>
+                <CardTitle>締切日</CardTitle>
               </CardHeader>
               <CardContent>
-              {studentType.map(filter => (
-                <div key={filter.id} className="flex items-center space-x-2 mb-2">
-                  <Checkbox
-                    id={filter.id}
-                    checked={selectedFilters.includes(filter.id)}
-                    onCheckedChange={() => handleFilterChange(filter.id)}
+                <Input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="w-full"
+                />
+              </CardContent>
+            </Card>
+            <Card className="mb-4">
+              <CardHeader>
+                <CardTitle>並び替え</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-2 mb-2">
+                  <input
+                    type="radio"
+                    id="sortNone"
+                    name="sortOrder"
+                    value=""
+                    checked={sortOrder === ''}
+                    onChange={() => setSortOrder('')}
                   />
-                  <label
-                    htmlFor={filter.id}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    {filter.label}
+                  <label htmlFor="sortNone" className="text-sm">
+                    並び替えなし
                   </label>
                 </div>
-              ))}
+                <div className="flex items-center space-x-2 mb-2">
+                  <input
+                    type="radio"
+                    id="sortAsc"
+                    name="sortOrder"
+                    value="asc"
+                    checked={sortOrder === 'asc'}
+                    onChange={() => setSortOrder('asc')}
+                  />
+                  <label htmlFor="sortAsc" className="text-sm">
+                    金額の安い順
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2 mb-2">
+                  <input
+                    type="radio"
+                    id="sortDesc"
+                    name="sortOrder"
+                    value="desc"
+                    checked={sortOrder === 'desc'}
+                    onChange={() => setSortOrder('desc')}
+                  />
+                  <label htmlFor="sortDesc" className="text-sm">
+                    金額の高い順
+                  </label>
+                </div>
               </CardContent>
             </Card>
             <Card>
@@ -173,7 +211,7 @@ export default function Component() {
     
         <div className="w-full md:w-3/4">
           <h2 className="text-2xl font-bold mb-4">奨学金リスト</h2>
-          {filteredScholarships.map(scholarship => (
+          {sortedScholarships.map(scholarship => (
             <Card key={scholarship._id} className="mb-4">
               <CardHeader>
                 <CardTitle>{scholarship.scholarship_name}</CardTitle>

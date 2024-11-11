@@ -13,17 +13,18 @@ const ScholarshipSchema = new Schema({
     },
     description: {
         type: String,
-        required: true,
         trim: true
+    },
+    capacity: {
+        type: Number,
+        required: true,
+        default: null
+    },
+    application_start_date: {
+        type: Date,
     },
     application_deadline: {
         type: Date,
-        required: true
-    },
-    eligibility_requirements: {
-        type: String,
-        required: true,
-        trim: true
     },
     award_amount: {
         type: Number,
@@ -39,14 +40,8 @@ const ScholarshipSchema = new Schema({
         required: false,
         trim: true
     },
-    contact_email: {
-        type: String,
-        required: false,
-        trim: true
-    },
     field_of_study: {
         type: String,
-        required: true,
         trim: true
     },
     education_level: {

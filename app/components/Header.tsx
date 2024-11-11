@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'ホーム', href: '/' },
+  { name: '問い合わせ', href: '/contact' },
   { name: '奨学金リスト', href: '/scholarship' },
   { name: '自分に合った奨学金を探す', href: '#' },
 ];

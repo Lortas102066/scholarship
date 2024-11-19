@@ -1,29 +1,29 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from 'react';
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { useState } from 'react'
 
 export default function Home() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
 
   const handleGetStarted = () => {
-    router.push("/scholarship");
-  };
+    router.push("/scholarship")
+  }
 
   const handleSendEmailClick = async () => {
     if (!email) {
-      alert('メールアドレスを入力してください。');
-      return;
+      alert('メールアドレスを入力してください。')
+      return
     }
 
-    setStatus('loading');
-    setMessage('');
+    setStatus('loading')
+    setMessage('')
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/email/subscribe`, {
@@ -32,23 +32,23 @@ export default function Home() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email })
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        setStatus('success');
-        setMessage(data.message);
-        setEmail('');
+        setStatus('success')
+        setMessage(data.message)
+        setEmail('')
       } else {
-        throw new Error(data.message || 'メール送信に失敗しました。');
+        throw new Error(data.message || 'メール送信に失敗しました。')
       }
     } catch (error) {
-      console.error('Subscription Error:', error);
-      setStatus('error');
-      setMessage('予期せぬエラーが発生しました。');
+      console.error('Subscription Error:', error)
+      setStatus('error')
+      setMessage('予期せぬエラーが発生しました。')
     }
-  };
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -58,16 +58,25 @@ export default function Home() {
             src="/scholar-hero.png"
             fill
             quality={100}
-            alt="Background"
+            alt="Desktop Background"
             priority
+            className="hidden md:block object-cover"
+          />
+          <Image
+            src="/mobile-hero.webp"
+            fill
+            quality={100}
+            alt="Mobile Background"
+            priority
+            className="block md:hidden object-cover"
           />
           <div className="absolute inset-0 bg-black bg-opacity-60"></div> 
         </div>
 
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
           <div className="text-center text-neutral-content max-w-2xl">
-            <h1 className="mb-9 text-5xl font-bold text-white">あなたの条件に合った奨学金を</h1>
-            <p className="mb-5 text-2xl text-white">
+            <h1 className="mb-9 text-4xl md:text-5xl font-bold text-white">あなたの条件に合った奨学金を</h1>
+            <p className="mb-5 text-xl md:text-2xl text-white">
               多様な奨学金プログラムの中から、最適なものを見つける
             </p>
             <button className="btn btn-primary text-base mb-8" onClick={handleGetStarted}>
@@ -77,7 +86,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* New white section for Subscribe */}
+      {/* Subscribe section */}
       <div className="bg-white py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center">
@@ -107,5 +116,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }

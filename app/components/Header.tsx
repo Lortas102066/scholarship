@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -16,7 +17,6 @@ const navItems = [
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
@@ -33,19 +33,6 @@ export default function Header() {
     }
   }
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   const handleUserSession = () => {
     if (!session) {
       router.push('/api/auth/signin');
@@ -58,8 +45,20 @@ export default function Header() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white shadow-md relative z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
@@ -74,10 +73,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={e => {
+                onClick={(e) => {
                   if (item.name === '自分に合った奨学金を探す') {
-                    e.preventDefault(); 
-                    fetchScholarships(); 
+                    e.preventDefault();
+                    fetchScholarships();
                   }
                 }}
                 className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -97,15 +96,13 @@ export default function Header() {
               {session ? 'ログアウト' : 'ログイン'}
             </Button>
             {!session && (
-              <Button
-                className="ml-2 bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
-              >
+              <Button className="ml-2 bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white">
                 会員登録
               </Button>
             )}
           </div>
 
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center ml-auto">
             <button
               onClick={toggleMobileMenu}
@@ -122,19 +119,40 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ${
+          isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={toggleMobileMenu}
+      ></div>
+
       {/* Mobile Menu */}
-      {isMobile && isMobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <div
+        className={`fixed inset-x-0 top-0 h-auto max-h-[80vh] bg-white/90 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${
+          isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <div className="flex flex-col">
+          <div className="flex justify-end p-4">
+            <button
+              onClick={toggleMobileMenu}
+              className="text-black hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black"
+            >
+              <X className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="px-4 pt-2 pb-6 space-y-4">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                onClick={e => {
+                onClick={(e) => {
                   if (item.name === '自分に合った奨学金を探す') {
-                    e.preventDefault(); // デフォルトのページ遷移を阻止
+                    e.preventDefault();
                     fetchScholarships();
                   }
+                  toggleMobileMenu();
                 }}
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
                   pathname === item.href
@@ -145,29 +163,29 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
-            <div className="mt-4 space-y-2">
+          </div>
+          <div className="px-4 pb-6 space-y-2">
+            <Button
+              variant="outline"
+              className="w-full border-[#7CB7B7] text-black hover:bg-[#7CB7B7]/10"
+              onClick={() => {
+                handleUserSession();
+                toggleMobileMenu();
+              }}
+            >
+              {session ? 'ログアウト' : 'ログイン'}
+            </Button>
+            {!session && (
               <Button
-                variant="outline"
-                className="w-full border-[#7CB7B7] text-black hover:bg-[#7CB7B7]/10"
-                onClick={() => {
-                  handleUserSession();
-                  setIsMobileMenuOpen(false);
-                }}
+                className="w-full bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
+                onClick={toggleMobileMenu}
               >
-                {session ? 'ログアウト' : 'ログイン'}
+                会員登録
               </Button>
-              {!session && (
-                <Button
-                  className="w-full bg-[#7CB7B7] hover:bg-[#7CB7B7]/90 text-white"
-                >
-                  会員登録
-                </Button>
-              )}
-            </div>
+            )}
           </div>
         </div>
-      )}
-
+      </div>
     </nav>
   );
 }

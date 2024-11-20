@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, X } from "lucide-react"
+import { Search, X } from 'lucide-react'
 
 const filters = [
   { id: 'stem', label: 'STEM' },
@@ -22,6 +22,7 @@ export default function Component() {
   const [dueDate, setDueDate] = useState('')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | ''>('')
   const filterRef = useRef<HTMLDivElement>(null)
+  const firstResultRef = useRef<HTMLDivElement>(null)
 
   interface Scholarship {
     _id: string;
@@ -63,6 +64,12 @@ export default function Component() {
     }
   }, [])
 
+  useEffect(() => {
+    if (window.innerWidth <= 768 && firstResultRef.current) {
+      firstResultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [selectedFilters, dueDate, sortOrder])
+
   const handleFilterChange = (filterId: string) => {
     setSelectedFilters(prev => 
       prev.includes(filterId) 
@@ -84,7 +91,6 @@ export default function Component() {
     return matchesSearchTerm && matchesFieldOfStudy && matchesDueDate
   })
 
-  // 並び替えロジックを追加
   const sortedScholarships = [...filteredScholarships];
 
   if (sortOrder === 'asc') {
@@ -211,8 +217,8 @@ export default function Component() {
     
         <div className="w-full md:w-3/4">
           <h2 className="text-2xl font-bold mb-4">奨学金リスト</h2>
-          {sortedScholarships.map(scholarship => (
-            <Card key={scholarship._id} className="mb-4">
+          {sortedScholarships.map((scholarship, index) => (
+            <Card key={scholarship._id} className="mb-4" ref={index === 0 ? firstResultRef : null}>
               <CardHeader>
                 <CardTitle>{scholarship.scholarship_name}</CardTitle>
               </CardHeader>

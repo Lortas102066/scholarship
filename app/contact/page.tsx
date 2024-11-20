@@ -9,18 +9,18 @@ export default function Component() {
             <div className="w-full max-w-6xl mx-auto px-4 py-16">
                 <div className="grid lg:grid-cols-2 gap-8 items-start">
                     <div className="space-y-4">
-                    <h1 className="text-3xl font-semibold tracking-tight">Contact us</h1>
+                    <h1 className="text-3xl font-semibold tracking-tight">問い合わせフォーム</h1>
                     <p className="text-muted-foreground">
-                        Ready to get in touch? Fill out the form and we&apos;ll get back to you as soon as we can.
+                        3営業所日以内に返信いたします。
                     </p>
                     </div>
                     <div className="space-y-4">
                     <div className="grid gap-4">
-                        <Input className="bg-muted" placeholder="Name" type="text" />
+                        <Input className="bg-muted" placeholder="名前" type="text" />
                         <Input className="bg-muted" placeholder="Email" type="email" />
                         <Textarea
                         className="min-h-[100px] bg-muted"
-                        placeholder="How can we help you?"
+                        placeholder="お問い合わせ内容"
                         />
                     </div>
                     <Button className="w-full bg-[#4f46e5] hover:bg-[#4338ca]" size="lg">

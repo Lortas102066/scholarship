@@ -67,7 +67,6 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 ml-auto">
             {navItems.map((item) => (
               <Link
@@ -102,7 +101,6 @@ export default function Header() {
             )}
           </div>
 
-          {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center ml-auto">
             <button
               onClick={toggleMobileMenu}
@@ -119,7 +117,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ${
           isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -127,7 +124,6 @@ export default function Header() {
         onClick={toggleMobileMenu}
       ></div>
 
-      {/* Mobile Menu */}
       <div
         className={`fixed inset-x-0 top-0 h-auto max-h-[80vh] bg-white/90 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${
           isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'

@@ -16,6 +16,9 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "スコラー",
   description: "ベストマッチした奨学金を探そう",
+  verification: {
+    google: "CBiJSUcusesV65Mnj3AXEOzGPno5E0EQfPO8Dmfr3eg",
+  }
 };
 
 export default function RootLayout({

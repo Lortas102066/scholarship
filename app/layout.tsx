@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { NextAuthProviders } from "@/lib/next-auth/provider";
+import { Analytics } from "@vercel/analytics/react"
 
 
 const notoSansJP = Noto_Sans_JP({
@@ -34,6 +35,7 @@ export default function RootLayout({
           </div>
           <Footer />
         </NextAuthProviders>
+        <Analytics />
       </body>
     </html>
   );

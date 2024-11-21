@@ -19,8 +19,8 @@ export default function Component() {
                         <Input className="bg-muted" placeholder="名前" type="text" />
                         <Input className="bg-muted" placeholder="Email" type="email" />
                         <Textarea
-                        className="min-h-[100px] bg-muted"
-                        placeholder="お問い合わせ内容"
+                            className="min-h-[100px] bg-muted"
+                            placeholder="お問い合わせ内容"
                         />
                     </div>
                     <Button className="w-full bg-[#4f46e5] hover:bg-[#4338ca]" size="lg">

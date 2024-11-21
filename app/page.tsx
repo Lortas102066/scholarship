@@ -63,7 +63,7 @@ export default function Home() {
             </p>
             <a
               href="/scholarship"
-              className="inline-block px-5 py-3 mt-6 text-sm font-medium leading-5 text-center text-white capitalize bg-blue-600 rounded-lg hover:bg-blue-500 lg:mx-0 lg:w-auto focus:outline-none"
+              className="inline-block px-5 py-3 mt-6 text-sm font-medium leading-5 text-center text-white capitalize bg-gray-900 rounded-lg hover:bg-gray-400 lg:mx-0 lg:w-auto focus:outline-none"
             >
               奨学金を検索
             </a>

@@ -81,7 +81,7 @@ export default function Home() {
 
 
       {/* Subscribe section */}
-      <div className="bg-white py-16">
+      <div className="bg-white py-6">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center">
             <h2 className="text-3xl font-bold mb-6 text-center">最新の奨学金情報を受け取る</h2>

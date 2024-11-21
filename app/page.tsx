@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,10 +10,6 @@ export default function Home() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
-
-  const handleGetStarted = () => {
-    router.push("/scholarship")
-  }
 
   const handleSendEmailClick = async () => {
     if (!email) {
@@ -52,39 +47,40 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative flex-grow">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/scholar-hero.png"
-            fill
-            quality={100}
-            alt="Desktop Background"
-            priority
-            className="hidden md:block object-cover"
-          />
-          <Image
-            src="/mobile-hero.webp"
-            fill
-            quality={100}
-            alt="Mobile Background"
-            priority
-            className="block md:hidden object-cover"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div> 
-        </div>
+      <section className="bg-white dark:bg-gray-900 flex items-center">
+        <div className="container px-6 py-16 mx-auto text-center">
+          <div className="max-w-lg mx-auto">
+            <h1 className="text-3xl font-semibold text-gray-800 dark:text-white lg:hidden lg:text-4xl">
+              あなたにぴったりの
+              <br />奨学金を今すぐ探そう
+            </h1>
 
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-          <div className="text-center text-neutral-content max-w-2xl">
-            <h1 className="mb-9 text-4xl md:text-5xl font-bold text-white">あなたの条件に合った奨学金を</h1>
-            <p className="mb-5 text-xl md:text-2xl text-white">
-              多様な奨学金プログラムの中から、最適なものを見つける
+            <h1 className="hidden text-3xl font-semibold text-gray-800 dark:text-white lg:block lg:text-4xl">
+              あなたにぴったりの奨学金を
+              <br />今すぐ探そう
+            </h1>
+
+            <p className="mt-6 text-gray-500 dark:text-gray-300">
+              自分に最適な奨学金がわからない方は、ログインしてAIがぴったりの奨学金をご提案します。
             </p>
-            <button className="btn btn-primary text-base mb-8" onClick={handleGetStarted}>
-              自分に合った奨学金を探す
-            </button>
+            <a
+              href="/scholarship"
+              className="inline-block px-5 py-2 mt-6 text-sm font-medium leading-5 text-center text-white capitalize bg-blue-600 rounded-lg hover:bg-blue-500 lg:mx-0 lg:w-auto focus:outline-none"
+            >
+              奨学金を検索
+            </a>
+          </div>
+
+          <div className="flex justify-center mt-10">
+            <img
+              className="object-cover w-full h-96 rounded-xl lg:w-4/5"
+              src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80"
+              alt="奨学金を探すイメージ"
+            />
           </div>
         </div>
-      </div>
+      </section>
+
 
       {/* Subscribe section */}
       <div className="bg-white py-16">

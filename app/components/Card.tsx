@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay"
 
 export function CarouselSize() {
     const plugin = React.useRef(
-        Autoplay({ delay: 2000, stopOnInteraction: true })
+        Autoplay({ delay: 2500, stopOnInteraction: true })
       )
   return (
     <Carousel
@@ -28,9 +28,8 @@ export function CarouselSize() {
     >
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index} className="basis-1/3 h-48">
-            <div >
-              <Card>
+          <CarouselItem key={index} className="basis-1/2 sm:basis-1/3">
+              <Card className="h-48 bg-gray-500 sm:h-64">
                 <CardHeader>
                     <CardTitle>奨学金</CardTitle>
                 </CardHeader>
@@ -38,7 +37,6 @@ export function CarouselSize() {
                   <span className="text-3xl font-semibold">{index + 1}</span>
                 </CardContent>
               </Card>
-            </div>
           </CarouselItem>
         ))}
       </CarouselContent>

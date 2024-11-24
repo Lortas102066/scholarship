@@ -107,112 +107,114 @@ export default function Component() {
     <div className="container mx-auto p-4">  
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-1/4" ref={filterRef}>
-          <div className="mb-6 relative">
-            <div className="relative">
-              <Input
-                type="text"
-                placeholder="奨学金を検索..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onClick={() => setShowFilters(true)}
-                className="pl-10"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            </div>
-            {showFilters && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 md:hidden"
-                onClick={() => setShowFilters(false)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-          <div className={`md:block ${showFilters ? 'block' : 'hidden'}`}>
-            <Card className="mb-4">
-              <CardHeader>
-                <CardTitle>締切日</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full"
-                />
-              </CardContent>
-            </Card>
-            <Card className="mb-4">
-              <CardHeader>
-                <CardTitle>並び替え</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="radio"
-                    id="sortNone"
-                    name="sortOrder"
-                    value=""
-                    checked={sortOrder === ''}
-                    onChange={() => setSortOrder('')}
+            <div className="fixed top-12 left-0 right-0 p-4 pb-0 bg-white z-10 md:relative md:p-0">
+              <div className="relative md:mb-6">
+                  <div className="relative">
+                  <Input
+                      type="text"
+                      placeholder="奨学金を検索..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onClick={() => setShowFilters(true)}
+                      className="pl-10"
                   />
-                  <label htmlFor="sortNone" className="text-sm">
-                    並び替えなし
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="radio"
-                    id="sortAsc"
-                    name="sortOrder"
-                    value="asc"
-                    checked={sortOrder === 'asc'}
-                    onChange={() => setSortOrder('asc')}
-                  />
-                  <label htmlFor="sortAsc" className="text-sm">
-                    金額の安い順
-                  </label>
-                </div>
-                <div className="flex items-center space-x-2 mb-2">
-                  <input
-                    type="radio"
-                    id="sortDesc"
-                    name="sortOrder"
-                    value="desc"
-                    checked={sortOrder === 'desc'}
-                    onChange={() => setSortOrder('desc')}
-                  />
-                  <label htmlFor="sortDesc" className="text-sm">
-                    金額の高い順
-                  </label>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-               <CardTitle>フィルター</CardTitle>
-              </CardHeader>
-              <CardContent>
-              {filters.map(filter => (
-                <div key={filter.id} className="flex items-center space-x-2 mb-2">
-                  <Checkbox
-                    id={filter.id}
-                    checked={selectedFilters.includes(filter.id)}
-                    onCheckedChange={() => handleFilterChange(filter.id)}
-                  />
-                  <label
-                    htmlFor={filter.id}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  </div>
+                  {showFilters && (
+                  <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 md:hidden"
+                      onClick={() => setShowFilters(false)}
                   >
-                    {filter.label}
-                  </label>
-                </div>
-              ))}
-              </CardContent>
-            </Card>
-          </div>
+                      <X className="h-4 w-4" />
+                  </Button>
+                  )}
+              </div>
+              <div className={`md:block ${showFilters ? 'block' : 'hidden'}`}>
+                <Card className="mb-4">
+                  <CardHeader>
+                    <CardTitle>締切日</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Input
+                      type="date"
+                      value={dueDate}
+                      onChange={(e) => setDueDate(e.target.value)}
+                      className="w-full"
+                    />
+                  </CardContent>
+                </Card>
+                <Card className="mb-4">
+                  <CardHeader>
+                    <CardTitle>並び替え</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <input
+                        type="radio"
+                        id="sortNone"
+                        name="sortOrder"
+                        value=""
+                        checked={sortOrder === ''}
+                        onChange={() => setSortOrder('')}
+                      />
+                      <label htmlFor="sortNone" className="text-sm">
+                        並び替えなし
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <input
+                        type="radio"
+                        id="sortAsc"
+                        name="sortOrder"
+                        value="asc"
+                        checked={sortOrder === 'asc'}
+                        onChange={() => setSortOrder('asc')}
+                      />
+                      <label htmlFor="sortAsc" className="text-sm">
+                        金額の安い順
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <input
+                        type="radio"
+                        id="sortDesc"
+                        name="sortOrder"
+                        value="desc"
+                        checked={sortOrder === 'desc'}
+                        onChange={() => setSortOrder('desc')}
+                      />
+                      <label htmlFor="sortDesc" className="text-sm">
+                        金額の高い順
+                      </label>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                  <CardTitle>フィルター</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                  {filters.map(filter => (
+                    <div key={filter.id} className="flex items-center space-x-2 mb-2">
+                      <Checkbox
+                        id={filter.id}
+                        checked={selectedFilters.includes(filter.id)}
+                        onCheckedChange={() => handleFilterChange(filter.id)}
+                      />
+                      <label
+                        htmlFor={filter.id}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {filter.label}
+                      </label>
+                    </div>
+                  ))}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
         </div>
     
         <div className="w-full md:w-3/4">

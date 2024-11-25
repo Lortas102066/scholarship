@@ -4,12 +4,12 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CarouselSize } from "../components/Card"
 
-export default function ScholarshipSearch() {
-  const [selectedCategory, setSelectedCategory] = useState("popular")
+const SliderCard = () => {
+    const [selectedCategory, setSelectedCategory] = useState("popular")
 
   return (
-    <div className="h-[100vh] mx-auto container">
-      <div className="flex gap-4 justify-center my-3">
+    <div>
+        <div className="flex gap-4 justify-center my-3">
         <Button
           variant={selectedCategory === "popular" ? "default" : "outline"}
           onClick={() => setSelectedCategory("popular")}
@@ -38,3 +38,4 @@ export default function ScholarshipSearch() {
   )
 }
 
+export default SliderCard;

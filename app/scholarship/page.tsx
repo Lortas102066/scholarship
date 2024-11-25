@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Search, X } from 'lucide-react'
+import SliderCard from '../components/SliderCard'
 
 const filters = [
   { id: 'stem', label: 'STEM' },
@@ -105,9 +106,12 @@ export default function Component() {
 
   return (
     <div className="container mx-auto p-4">  
+      <div className='mt-8 md:mt-0'>
+        <SliderCard />
+      </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-1/4" ref={filterRef}>
-            <div className="fixed top-12 left-0 right-0 p-4 pb-0 bg-white z-10 md:relative md:p-0">
+            <div className="fixed top-[54px] left-0 right-0 p-4 pb-0 bg-white z-10 md:relative md:p-0">
               <div className="relative md:mb-6">
                   <div className="relative">
                   <Input
@@ -216,7 +220,7 @@ export default function Component() {
               </div>
             </div>
         </div>
-    
+                  
         <div className="w-full md:w-3/4">
           <h2 className="text-2xl font-bold mb-4">奨学金リスト</h2>
           {sortedScholarships.map((scholarship, index) => (

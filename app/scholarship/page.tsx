@@ -104,13 +104,14 @@ export default function Component() {
     return new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(amount);
   };
 
+  
   return (
     <div className="container mx-auto p-4">  
       <div className='mt-8 md:mt-0'>
         <SliderCard />
       </div>
       <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-1/4" ref={filterRef}>
+        <div className="w-full md:w-1/4  " ref={filterRef}>
             <div className="fixed top-[54px] left-0 right-0 p-4 pb-0 bg-white z-10 md:relative md:p-0">
               <div className="relative md:mb-6">
                   <div className="relative">

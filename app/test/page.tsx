@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Search, Filter, Menu, Calendar, SortDesc, DollarSign, GraduationCap, X } from 'lucide-react'
+import { Search, Filter, Calendar, SortDesc, DollarSign, GraduationCap, X } from 'lucide-react'
 import {
   Select,
   SelectContent,

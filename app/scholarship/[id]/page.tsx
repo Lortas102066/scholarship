@@ -46,41 +46,49 @@ export default async function ScholarshipDetail({
         <div className="space-y-4 mb-8">
           <Card>
             <CardContent className="p-6">
-              <div className="flex flex-col items-center">
-                <Users className="h-6 w-6 mb-2" />
-                <div className="text-sm text-gray-600">募集人数</div>
-                <div className="text-xl font-bold">
-                  {scholarship.capacity}
+            <div className="flex flex-col items-center">
+              <div className="flex items-center mb-2">
+                <Users className="h-6 w-6 mr-2" />
+                <div className="text-base text-gray-600">
+                  募集人数
                 </div>
               </div>
+              <div className="text-xl font-bold">
+                {scholarship.capacity}
+              </div>
+            </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex flex-col items-center">
-                <Yen className="h-6 w-6 mb-2" />
-                <div className="text-sm text-gray-600">支給額</div>
-                <div className="text-xl font-bold">
-                  {scholarship.amounts.map((amount: { currency: string; amount: number; duration: number }, index: number) => (
-                    <div key={index}>
-                      {amount.currency} {amount.amount.toLocaleString()} ({amount.duration}ヶ月)
-                    </div>
-                  ))}
-                </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center mb-2">
+                <Yen className="h-6 w-6 mr-2" />
+                <div className="text-base text-gray-600">支給額</div>
               </div>
+              <div className="text-xl font-bold">
+                {scholarship.amounts.map((amount: { currency: string; amount: number; duration: number }, index: number) => (
+                  <div key={index}>
+                    {amount.currency} {amount.amount.toLocaleString()} ({amount.duration}ヶ月)
+                  </div>
+                ))}
+              </div>
+            </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex flex-col items-center">
-                <GraduationCap className="h-6 w-6 mb-2" />
-                <div className="text-sm text-gray-600">奨学金種類</div>
-                <div className="text-xl font-bold">
-                  {scholarship.isGranted ? '給付型奨学金' : '貸付型奨学金'}
-                </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center mb-2">
+                <GraduationCap className="h-6 w-6 mr-2" />
+                <div className="text-base text-gray-600">奨学金種類</div>
               </div>
+              <div className="text-xl font-bold">
+                {scholarship.isGranted ? '給付型奨学金' : '貸付型奨学金'}
+              </div>
+            </div>
             </CardContent>
           </Card>
         </div>
@@ -96,8 +104,8 @@ export default async function ScholarshipDetail({
         </div>
 
         {/* Action Button */}
-        <a target="_blank"　href={scholarship.link}>
-          <Button className="w-full bg-black text-white hover:bg-gray-800">
+        <a target="_blank" href={scholarship.link}>
+          <Button className="w-full bg-black text-white hover:bg-gray-800 py-8">
               公式ページへ
           </Button>
         </a>

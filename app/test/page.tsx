@@ -1,5 +1,5 @@
 'use client'
-
+import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -230,6 +230,11 @@ export default function ScholarshipSearch() {
           {/* Scholarship Listings */}
           <div className="space-y-4">
             {scholarships.map((scholarship) => (
+              <div key={scholarship._id} >
+                <Link 
+                  key={scholarship._id} 
+                  href={`/scholarship/${scholarship._id}`}
+                >
               <Card key={scholarship._id} className="w-full">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-bold mb-2">{scholarship.name}</h3>
@@ -244,7 +249,7 @@ export default function ScholarshipSearch() {
                                金額：{amount.currency} {amount.amount.toLocaleString()} ({amount.duration}ヶ月)
                             </div>
                           ))}
-                        </div>
+                      </div>
                       <div className="space-y-1">
                         {scholarship.capacity && (
                           <p className="text-sm">人数：{scholarship.capacity}</p>
@@ -266,6 +271,8 @@ export default function ScholarshipSearch() {
                   </div>
                 </CardContent>
               </Card>
+                </Link>
+              </div>
             ))}
           </div>
         </div>

@@ -57,16 +57,6 @@ export default function ScholarshipSearch() {
       fetchScholarships();
     }, []);
 
-    const formatDate = (date: Date) => {
-      if (!date) return ''
-      // toLocaleDateString の第二引数は各プロジェクトの要件に合わせて設定
-      return new Date(date).toLocaleDateString('ja-JP', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      })
-    }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-green-50">
       {/* Mobile Search Modal */}

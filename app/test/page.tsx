@@ -25,11 +25,20 @@ export interface Scholarship {
   isGranted: boolean;
   isAbroad: boolean;
   combination: boolean;
-  amounts: any[];
-  conditions: any[];
+  amounts: Amount[];
+  conditions: Condition[];
 }
 
+interface Amount {
+  currency: string;
+  amount: number;
+  duration?: number;
+}
 
+interface Condition {
+  grade?: string;
+  income?: number;
+}
 
 export default function ScholarshipSearch() {
   const [showSearchModal, setShowSearchModal] = useState(false)

@@ -25,11 +25,20 @@ export interface Scholarship {
   isGranted: boolean;
   isAbroad: boolean;
   combination: boolean;
-  amounts: any[];
-  conditions: any[];
+  amounts: Amount[];
+  conditions: Condition[];
 }
 
+interface Amount {
+  currency: string;
+  amount: number;
+  duration?: number;
+}
 
+interface Condition {
+  grade?: string;
+  income?: number;
+}
 
 export default function ScholarshipSearch() {
   const [showSearchModal, setShowSearchModal] = useState(false)
@@ -47,16 +56,6 @@ export default function ScholarshipSearch() {
       };
       fetchScholarships();
     }, []);
-
-    const formatDate = (date: Date) => {
-      if (!date) return ''
-      // toLocaleDateString の第二引数は各プロジェクトの要件に合わせて設定
-      return new Date(date).toLocaleDateString('ja-JP', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-      })
-    }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-green-50">

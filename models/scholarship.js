@@ -1,62 +1,64 @@
-import { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
+import { stringify } from "querystring";
+
+const { Schema, model, models } = mongoose;
+
+const AmountSchema = new Schema({
+    currency: { type: String, required: true },
+    amount:   { type: Number, required: true },
+    duration: { type: Number, required: false },
+}, { _id : false });
+
+const ConditionSchema = new Schema({
+    grade:  { type: String, required: false },
+    income: { type: Number, required: false },
+}, { _id : false });
 
 const ScholarshipSchema = new Schema({
-    scholarship_name: {
-        type: String,
-        required: true,
-        trim: true
+    name: {
+      type: String,
+      required: true
     },
-    provider_name: {
-        type: String,
-        required: true,
-        trim: true
+    link: {
+      type: String,
+      required: true
     },
-    description: {
-        type: String,
-        trim: true
+    provider: {
+      type: String,
+      required: true
     },
-    capacity: {
-        type: Number,
-        required: true,
-        default: null
+    desc: {
+      type: String,
+      required: false
     },
     application_start_date: {
-        type: Date,
+      type: Date,
+      required: true
     },
-    application_deadline: {
-        type: Date,
+    application_end_date: {
+      type: Date,
+      required: true
     },
-    award_amount: {
-        type: Number,
-        default: null
+    isGranted: {
+      type: Boolean,
+      required: true
     },
-    duration: {
-        type: String,
-        required: false,
-        trim: true
+    isAbroad: {
+      type: Boolean,
+      required: true
     },
-    website_link: {
-        type: String,
-        required: false,
-        trim: true
+    combination: {
+      type: Boolean,
+      required: true
     },
-    field_of_study: {
-        type: String,
-        trim: true
+    capacity: {
+      type: String,
+      required: true
     },
-    education_level: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    min_GPA: {
-        type: Number,
-        default: null
-    },
-    max_GPA: {
-        type: Number,
-        default: null
-    }
+    amounts: [AmountSchema],
+    conditions: [ConditionSchema],
+}, {
+    timestamps: true 
 });
 
 const Scholarship = models.Scholarship || model('Scholarship', ScholarshipSchema);

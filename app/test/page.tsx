@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,8 +13,50 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+export interface Scholarship {
+  _id: string;
+  name: string;
+  provider: string;
+  capacity?: string;
+  link: string;
+  desc: string;
+  application_start_date: Date;
+  application_end_date: Date;
+  isGranted: boolean;
+  isAbroad: boolean;
+  combination: boolean;
+  amounts: any[];
+  conditions: any[];
+}
+
+
+
 export default function ScholarshipSearch() {
   const [showSearchModal, setShowSearchModal] = useState(false)
+  const [scholarships, setScholarships] = useState<Scholarship[]>([]);
+  
+   useEffect(() => {
+      const fetchScholarships = async () => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/database/scholarship`);
+          const data = await response.json();
+          setScholarships(data);
+        } catch (error) {
+          console.error('奨学金の取得エラー:', error);
+        }
+      };
+      fetchScholarships();
+    }, []);
+
+    const formatDate = (date: Date) => {
+      if (!date) return ''
+      // toLocaleDateString の第二引数は各プロジェクトの要件に合わせて設定
+      return new Date(date).toLocaleDateString('ja-JP', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })
+    }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-green-50">
@@ -133,7 +175,7 @@ export default function ScholarshipSearch() {
           </div>
         </div>
 
-        <div className="flex justify-center gap-4 mb-12">
+        {/* <div className="flex justify-center gap-4 mb-12">
           <Button variant="default" className="bg-black text-white hover:bg-gray-800">
             人気奨学金
           </Button>
@@ -143,7 +185,7 @@ export default function ScholarshipSearch() {
           <Button variant="outline" className="bg-white">
             所得制限無し
           </Button>
-        </div>
+        </div> */}
 
         {/* Main Content */}
         <div className="grid md:grid-cols-[300px,1fr] gap-8 max-w-6xl mx-auto">
@@ -188,25 +230,39 @@ export default function ScholarshipSearch() {
 
           {/* Scholarship Listings */}
           <div className="space-y-4">
-            {[1, 2, 3, 4].map((i) => (
-              <Card key={i} className="w-full">
+            {scholarships.map((scholarship) => (
+              <Card key={scholarship._id} className="w-full">
                 <CardContent className="p-6">
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                  <h3 className="text-lg font-bold mb-2">{scholarship.name}</h3>
+                  <div className="flex flex-row justify-between md:items-start gap-4">
                     <div>
-                      <h3 className="text-lg font-bold mb-2">
-                        柳井正UNIQLO 海外給付型奨学金
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">提供者：あいうえお財団</p>
+                      {/* <p className="text-sm text-gray-600 mb-2">
+                        提供者：{scholarship.provider}
+                      </p> */}
+                      <div className="text-sm mt-2">
+                          {scholarship.amounts.map((amount, index) => (
+                            <div key={index}>
+                               金額：{amount.currency} {amount.amount.toLocaleString()} ({amount.duration}ヶ月)
+                            </div>
+                          ))}
+                        </div>
                       <div className="space-y-1">
-                        <p className="text-sm">人数：100人</p>
-                        <p className="text-sm">支給額：100円(一人当たり)</p>
+                        {scholarship.capacity && (
+                          <p className="text-sm">人数：{scholarship.capacity}</p>
+                        )}
                       </div>
                     </div>
-                    <div className="md:text-right">
+                    <div className="text-right">
                       <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                        募集状況：受付中
+                        {scholarship.isGranted ? '給付決定済み' : '募集受付中'}
                       </span>
-                      <p className="text-sm mt-2">種類:給付型奨学金</p>
+                      <p className="text-sm mt-2">
+                        海外向け：{scholarship.isAbroad ? '対象' : '対象外'}
+                      </p>
+                      <p className="text-sm">
+                        併給：{scholarship.combination ? '可' : '不可'}
+                      </p>
+                     
                     </div>
                   </div>
                 </CardContent>

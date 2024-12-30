@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { NextAuthProviders } from "@/lib/next-auth/provider";
 import { Analytics } from "@vercel/analytics/react";
+import Loading from "./loading";
+import { Suspense } from "react";
 
 const notoSansJP = Noto_Sans_JP({
   subsets: ["latin"],
@@ -42,11 +44,13 @@ export default function RootLayout({
             gtag('config', 'G-X1PM5BBT08');
           `}
         </Script>
-        <NextAuthProviders>
-          <Header />
-          <div className="pt-16">{children}</div>
-          <Footer />
-        </NextAuthProviders>
+          <NextAuthProviders>
+            <Header />
+            <Suspense fallback={<Loading />}>
+              <div className="pt-16">{children}</div>
+            </Suspense>
+            <Footer />
+          </NextAuthProviders>
         <Analytics />
       </body>
     </html>

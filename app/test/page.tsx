@@ -243,7 +243,7 @@ export default function ScholarshipSearch() {
                       {/* <p className="text-sm text-gray-600 mb-2">
                         提供者：{scholarship.provider}
                       </p> */}
-                      <div className="text-sm mt-2">
+                      <div className="text-sm font-semibold my-2">
                           {scholarship.amounts.map((amount, index) => (
                             <div key={index}>
                                金額：{amount.currency} {amount.amount.toLocaleString()} ({amount.duration}ヶ月)
